@@ -2,7 +2,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const cors = require('cors');
+const cors = require("cors");
 
 const bodyParser = require("body-parser");
 
@@ -33,19 +33,19 @@ const sequelize = new Sequelize(
 // Define a model
 const Employee = sequelize.define("employee", {
   // Define model attributes
-//   id: {
-//     type: Sequelize.STRING,
-//     allowNull: false,
-//   },
+  //   id: {
+  //     type: Sequelize.STRING,
+  //     allowNull: false,
+  //   },
 
-// firstName: {
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   },
-//   lastName: {
-//     type: Sequelize.STRING
-//     // allowNull defaults to true
-//   }
+  // firstName: {
+  //     type: Sequelize.STRING,
+  //     allowNull: false
+  //   },
+  //   lastName: {
+  //     type: Sequelize.STRING
+  //     // allowNull defaults to true
+  //   }
   name: {
     type: Sequelize.STRING,
     // allowNull: false,
@@ -72,14 +72,14 @@ sequelize
     // Synchronize the model with the database
     // return Employee.sync({ force: true }); // This will drop the table if it already exists
   })
-  .then(() => {
-    // console.log("User table created successfully.");
-    // Insert a sample record
-    // return Employee.create({ name: "Tom", email: "tom@gmail.com", contact: "9876543212", company: "omni" });
-  })
-  .then(() => {
-    console.log("Sample user created successfully.");
-  })
+  // .then(() => {
+  //   // console.log("User table created successfully.");
+  //   // Insert a sample record
+  //   // return Employee.create({ name: "Tom", email: "tom@gmail.com", contact: "9876543212", company: "omni" });
+  // })
+  // .then(() => {
+  //   console.log("Sample user created successfully.");
+  // })
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
@@ -93,35 +93,37 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
+// app.use("/", indexRouter);
 app.use("/quotes", quotesRouter);
 
-
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
 app.get("/users", async (req, res) => {
-    try {
-      // Retrieve user data including associated addresses
-      const users = await Employee.findAll();
-  
-      // Send the retrieved data as a response
-      res.json(users);
-    } catch (error) {
-      // Handle errors
-      console.error("Error retrieving user data:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
-  
-  // POST route to add a new user
-  app.post("/users", async (req, res) => {
-      try {
-        const { name, email, contact, company } = req.body;
-        const newUser = await Employee.create({ name, email, contact, company });
-        res.status(201).json(newUser);
-      } catch (error) {
-        console.error("Error creating user:", error); // Log the error
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    });
+  try {
+    // Retrieve user data including associated addresses
+    const users = await Employee.findAll();
+
+    // Send the retrieved data as a response
+    res.json(users);
+  } catch (error) {
+    // Handle errors
+    console.error("Error retrieving user data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// POST route to add a new user
+app.post("/users", async (req, res) => {
+  try {
+    const { name, email, contact, company } = req.body;
+    const newUser = await Employee.create({ name, email, contact, company });
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error("Error creating user:", error); // Log the error
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 module.exports = app;
