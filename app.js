@@ -70,12 +70,12 @@ sequelize
   .then(() => {
     console.log("Connection has been established successfully.");
     // Synchronize the model with the database
-    return Employee.sync({ force: true }); // This will drop the table if it already exists
+    // return Employee.sync({ force: true }); // This will drop the table if it already exists
   })
   .then(() => {
     // console.log("User table created successfully.");
     // Insert a sample record
-    return Employee.create({ name: "Tom", email: "tom@gmail.com", contact: "9876543212", company: "omni" });
+    // return Employee.create({ name: "Tom", email: "tom@gmail.com", contact: "9876543212", company: "omni" });
   })
   .then(() => {
     console.log("Sample user created successfully.");
