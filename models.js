@@ -37,6 +37,14 @@ sequelize
   .then(() => {
     console.log("Employee model synced with database.");
   })
+  .then(() => {
+    return Employee.create({
+      name: "Tom",
+      email: "tom@gmail.com",
+      contact: "9876543212",
+      company: "omni",
+    });
+  })
   .catch((err) => {
     console.error("Error syncing Employee model:", err);
   });
