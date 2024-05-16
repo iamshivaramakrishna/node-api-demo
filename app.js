@@ -13,7 +13,7 @@ var app = express();
 
 sequelize
   .authenticate()
-  //   .then(() => Employee.sync({ force: true })) // This will drop the table if it already exists
+  .then(() => Employee.sync({ force: true })) // This will drop the table if it already exists
   .then(() =>
     Employee.create({
       name: "John Deo",
